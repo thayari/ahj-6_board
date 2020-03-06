@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Board</title>
+  <link href="./src/css/style.css" rel="stylesheet"></head>
+</head>
+<body>
+  
+  <div class="board">
+    <div class="column" data-id="todo">
+      <h2>TODO</h2>
+      <ul class="list"></ul>
+      <button type="button" class="add">+ Add card</button>
+    </div>
+    <div class="column" data-id="inprogress">
+      <h2>IN PROGRESS</h2>
+      <ul class="list"></ul>
+      <button type="button" class="add">+ Add card</button>
+    </div>
+    <div class="column" data-id="done">
+      <h2>DONE</h2>
+      <ul class="list"></ul>
+      <button type="button" class="add">+ Add card</button>
+    </div>
+  </div>
+
+  <div class="modal hidden">
+    <textarea id="text" cols="30" rows="10"></textarea>
+    <button id="submit">Добавить</button>
+    <button id="cancel">Отменить</button>
+  </div>
+
+  <script type="text/javascript" src="./src/index.js"></script></script>
+</body>
+</html>
