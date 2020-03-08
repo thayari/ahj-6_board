@@ -57,7 +57,7 @@ button:active {
   padding: 0;
 }
 
-.card, .card-placeholder {
+.card {
   background: #686767;
   box-shadow: -2px 5px 4px rgba(0, 0, 0, 0.2), 2px 5px 4px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
@@ -65,12 +65,15 @@ button:active {
   padding-top: 10px;
   padding-right: 20px;
   padding-bottom: 12px;
-  margin-bottom: 12pt;
+  margin-bottom: 6pt;
   position: relative;
 }
 
 .card-placeholder {
   opacity: 0.5;
+  background: #686767;
+  border-radius: 4px;
+  margin-bottom: 6pt;
 }
 
 .delete {

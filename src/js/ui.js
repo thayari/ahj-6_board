@@ -13,9 +13,10 @@ export default class Ui {
     this.mouseDown = false;
     this.draggedEl = null;
     this.ghostEl = null;
-    this.placeholder = null;
+    this.placeholder = document.createElement('li');
     this.lists = [this.todo, this.inprogress, this.done];
     this.closestCard = null;
+    this.latestCard = null;
   }
 
   dnd() {
@@ -63,25 +64,31 @@ export default class Ui {
 
       // карточка, над которой проносится элемент
       this.closestCard = event.target.closest('.card');
-      // добавить плейсхолдер
-      if (this.closestCard) {
-        this.addPlaceholder('after');
+      if (this.closestCard != null) {
+        this.latestCard = this.closestCard;
       }
-      /*
-      if (this.closestCard) {
-        const halfHeight = this.closestCard.offsetHeight / 2;
-        const box = this.closestCard.getBoundingClientRect();
+
+      if (document.elementFromPoint(event.clientX, event.clientY).classList.contains('board')) {
+        this.latestCard = null;
+      }
+
+      // добавить плейсхолдер
+      if (this.latestCard) {
+        this.placeholder.classList.add('card-placeholder');
+        this.placeholder.style.height = `${this.ghostEl.offsetHeight}px`;
+
+        const halfHeight = this.latestCard.offsetHeight / 2;
+        const box = this.latestCard.getBoundingClientRect();
         if (event.clientY <= box.top + halfHeight) {
-          this.addPlaceholder('before');
+          this.latestCard.before(this.placeholder);
         } else if (event.clientY > box.top + halfHeight) {
-          this.addPlaceholder('after');
+          this.latestCard.after(this.placeholder);
         }
       }
-      */
 
       // если курсор не над карточкой, удалить плейсхолдер
-      if (!this.closestCard) {
-        this.removePlaceholder();
+      if (!this.latestCard) {
+        this.placeholder.remove();
       }
     });
 
@@ -112,7 +119,7 @@ export default class Ui {
       find.columnType = targetColumn.dataset.id;
 
 
-      if (this.closestCard) {
+      if (this.latestCard) {
         // добавить вместо плейсхолдера
         this.placeholder.insertAdjacentElement('beforebegin', this.draggedEl);
       }
@@ -121,6 +128,11 @@ export default class Ui {
       this.removeGhostEl();
       this.defineOrder();
       this.render();
+    });
+
+    this.board.addEventListener('mouseleave', () => {
+      this.removeGhostEl();
+      this.mouseDown = false;
     });
   }
 
@@ -132,25 +144,6 @@ export default class Ui {
     this.draggedEl.style.opacity = 1;
     this.draggedEl = null;
     this.board.classList.remove('grabbing-cursor');
-  }
-
-  addPlaceholder(position) {
-    if (this.placeholder) {
-      this.removePlaceholder();
-    }
-    this.placeholder = document.createElement('li');
-    this.placeholder.classList.add('card-placeholder');
-    this.placeholder.style.height = this.draggedEl.offsetHeight;
-    if (position === 'before') {
-      this.closestCard.parentNode.insertBefore(this.placeholder, this.closestCard);
-    } else if (position === 'after') {
-      this.closestCard.parentNode.insertBefore(this.placeholder, this.closestCard.nextSibling);
-    }
-  }
-
-  removePlaceholder() {
-    this.placeholder.remove();
-    this.placeholder = null;
   }
 
   addEvents() {
